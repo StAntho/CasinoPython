@@ -4,3 +4,4 @@
 
 Ajouter le package dotenv pour gérer les variables d'environnement
 `pip install python-dotenv`
+`pip install mysql-connector-python`

@@ -15,16 +15,21 @@ try:
     connection = con.connect(**connection_params)
     print(connection)
     if connection and connection.is_connected():
-        db_Info = connection.get_server_info()
-        print("Connected to MySQL Server version ", db_Info)
+        mySql_Create_Table_Query = """CREATE TABLE User ( 
+                            Id int(11) NOT NULL,
+                            pseudo varchar(250) NOT NULL,
+                            first_connection Date NOT NULL,
+                            PRIMARY KEY (Id)) """
+        
         cursor = connection.cursor()
-        cursor.execute("select database();")
-        record = cursor.fetchone()
-        print("You're connected to database: ", record)
+        cursor.execute(mySql_Create_Table_Query)
+        print("Laptop Table created successfully ")
+        # record = cursor.fetchone()
+        # print("You're connected to database: ", record)
 except Error as e:
-    print("Error while connecting to MySQL", e)
+    print("Failed to create table in MySQL: {}".format(e))
 finally:
     if connection and connection.is_connected():
-        # cursor.close()
+        cursor.close()
         connection.close()
         print("MySQL connection is closed")
