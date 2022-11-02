@@ -2,13 +2,12 @@ import db_connection
 from datetime import datetime
 from sys import exit
 from game import game
-from game import set_mise
 
 
 # Fonction affichant toutes les stats de l'utilisateur
 def show_stat(level) :
 	# TODO: Il faut récupérer toutes les stats
-	print("Les statistiques du level " + str(level) + " sont les suivantes :")
+	print("Les statistiques du level {} sont les suivantes :".format(level))
 	print("\n\t")
 	return
 
@@ -42,26 +41,17 @@ name_user = input('')
 
 while name_user :
 	is_user = db_connection.select_user_by_psuedo(name_user)
-	print(is_user)
 	if not is_user :
 		# Si nouvel utilisateur
 		level = 1
 		sold = 10
-		db_connection.insert_data(name_user,sold,level,datetime.now())
+		db_connection.insert_data(name_user, sold, level, datetime.now())
 		is_user = db_connection.select_user_by_psuedo(name_user)
-		for data in is_user:
-			user_id = data[0] 
-			user_sold = data[2]
-			print(user_sold)
 		print("\nHello " + name_user + ", vous avez 10 €, Très bien ! Installez vous SVP à la table de pari.")
 		print("Je vous expliquerai le principe du jeu :\n")
 		print(instruction_txt)
 	else :
 		# Si l'utilisateur est connnu alors demander s'il veut relire les règles
-		for data in is_user:
-			user_id = data[0] 
-			user_sold = data[2]
-			print(user_sold)
 		print("\nVoulez-vous que j'explique les règles du jeu (O/N) ?")
 		while True:
 			instruction = input('')
@@ -72,7 +62,7 @@ while name_user :
 				break
 			else :
 				print("Je ne comprends pas ! Voulez-vous que j'explique les règles du jeu (O/N) ?")
-		
+
 		print("\nVoulez-vous recommencer au level 1 (O/N) ?")
 		while True :
 			level_statement = input('')
@@ -85,14 +75,15 @@ while name_user :
 			else :
 				print('Je ne comprends pas ! Voulez-vous recommencer au level 1 (O/N) ?')
 
-	# Insertion de la mise
-	print("\nLe jeu commence, entrez votre mise :")
-	mise = set_mise(level, user_sold)
+	# Récupération de l'id et du solde de l'utilisateur
+	for data in is_user :
+		user_id = data[0]
+		user_sold = data[2]
 
 	# Début du jeu
-	print("\nLevel " + str(level))
+	print("\nLevel {}".format(level))
 	while True :
-		game_ret = game(user_id, user_sold, name_user, level, mise)
+		game_ret = game(user_id, user_sold, name_user, level)
 		if game_ret :
 			if level != 3 :
 				show_stat(level)
@@ -102,14 +93,20 @@ while name_user :
 		else :
 			if level != 1 :
 				level -= 1
+		# Update du level atteint par l'utilisateur
 		db_connection.update_user_level(level, user_id)	
-		print(level)	
 
+		# Récupération du nouveau solde
+		user_data = db_connection.select_user_by_psuedo(name_user)
+		for data in user_data :
+			user_sold = data[2]
+
+		# Si l'utilisateur veut s'arrêter ici
 		if leave() :
 			if game_ret :
-				print("\nSuper ! Vous passez au Level " + str(level) + ".")
+				print("\nSuper ! Vous passez au Level {}.".format(level))
 			else :
-				print("\nVous passez au Level " + str(level) + ".")
+				print("\nVous passez au Level {}.".format(level))
 			continue
-		print("\nAu revoir ! Vous finissez la partie avec " + str(mise) + " €.")
+		print("\nAu revoir ! Vous finissez la partie avec {} €.".format(user_sold))
 		exit()
