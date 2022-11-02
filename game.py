@@ -8,7 +8,7 @@ def set_mise(level, user_sold) :
 		while True :
 			try :
 				mise = int(input(''))
-				if mise > user_sold and mise > 0 :
+				if mise > user_sold or mise == 0 :
 					print("Erreur, votre mise est plus elevé que votre solde.")
 					print("Entrer une mise inférieure ou égale à {} € :".format(user_sold))
 					continue
