@@ -28,7 +28,7 @@ def user_informations(pseudo, user_id) :
 
 def best_player() :
     best_player = db_connection.get_all_stat()
-    print("--------------------- Top 3 joueurs par sold-----------------------")
+    print("--------------------- Top 3 des joueurs par solde-----------------------")
     print("------------------------------------------------------------------")
     for row in best_player :
         print("-------- {} avec un gain de {}€".format(row[0], row[1]))
