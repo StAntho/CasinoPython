@@ -1,33 +1,27 @@
 import db_connection
 
-
-def user_informations(pseudo,user_id):
+# Affichage des statistiques de l'utilisateur user_id
+def user_informations(pseudo, user_id) :
     user = db_connection.select_user_by_psuedo(pseudo)
-    for row in user:
+    for row in user :
         print("--------------------------------------------")
-        print("------------Information---------------------")
-        print("---- id: ", row[0])
-        print("---- Pseudo: ", row[1])
-        print("---- Sold: ", row[2])
-        print("---- Current level: ", row[3])
-        print("---- First connection: ", row[4])
-        print("--------------------------------------------")
+        print("Voici les statistiques depuis la 1ère fois {}".format(row[4]))
         print("--------------------------------------------")
 
-    user_stats = db_connection.get_all_stat_by_user_id(10)
-    for row in user_stats:
-        print("------------Statistiques-------------------")
-        print("---- Level max: ", row[0])
-        print("---- Gain min: ", row[1])
-        print("---- Gain moy: ", row[2])
-        print("---- Gain max: ", row[3])
-        print("---- Mise min: ", row[4])
-        print("---- Mise moy: ", row[5])
-        print("---- Mise max: ", row[6])
-        print("---- Nb coup moy: ", row[7])
+    user_stats = db_connection.get_all_stat_by_user_id(user_id)
+    for row in user_stats :
+        print("------------Vos meilleures statistiques-------------------")
+        print("---- Level le plus élevé atteint est : {}".format(row[0]))
+        print("---- Vous avez réussi à trouver le bon nombre dès le 1er coup {} fois.".format(db_connection.get_find_in_one_by_user_id(user_id)))
+        print("---- Le gain le plus élevé est de : {}€".format(row[3]))
+        print("---- La mise la plus élevée est de : {}€".format(row[6]))
         print("--------------------------------------------")
+        print("------------Vos pires statistiques-------------------")
+        print("---- Le gain le plus petit est de : {}€".format(row[1]))
+        print("---- La mise la plus petite est de : {}€".format(row[4]))
         print("--------------------------------------------")
-
-if __name__ == '__main__':
-    user_informations('azerty',10)
-   
+        print("------------Vos moyennes-------------------")
+        print("---- Le gain moyen est de : {:.2f}€".format(row[2]))
+        print("---- La mise moyenne est de : {:.2f}€".format(row[5]))
+        print("---- Le nombre moyen de tentatives pour trouver le bon nombre est : {:.2f}".format(row[7]))
+        print("--------------------------------------------")

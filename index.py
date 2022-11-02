@@ -2,15 +2,7 @@ import db_connection
 from datetime import datetime
 from sys import exit
 from game import game
-
-
-# Fonction affichant toutes les stats de l'utilisateur
-def show_stat(level) :
-	# TODO: Il faut récupérer toutes les stats
-	print("Les statistiques du level {} sont les suivantes :".format(level))
-	print("\n\t")
-	return
-
+from user_infos import user_informations
 
 # Fonction pour savoir si l'utilisateur souhaite quitter le jeu
 def leave() :
@@ -86,10 +78,10 @@ while name_user :
 		game_ret = game(user_id, user_sold, name_user, level)
 		if game_ret :
 			if level != 3 :
-				show_stat(level)
+				user_informations(name_user, user_id)
 				level += 1
 			else :
-				show_stat(level)
+				user_informations(name_user, user_id)
 		else :
 			if level != 1 :
 				level -= 1

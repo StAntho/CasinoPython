@@ -94,6 +94,19 @@ def get_all_stat_by_user_id(user_id) :
     records = cursor.fetchall()
     return records
 
+# Retourne le nombre de fois où le user_id a trouvé dès le 1er coup
+def get_find_in_one_by_user_id(user_id) :
+    db = connectDB()
+    mySql_select_query = """SELECT COUNT(*)
+                            FROM Level
+                            WHERE user_id = %s
+                                AND nb_coup = 1"""
+    cursor = db.cursor()
+    cursor.execute(mySql_select_query, (user_id,))
+    records = cursor.fetchall()
+    for row in records :
+        return row[0]
+
 # Retourne les statistiques de tous les utilisateurs
 def get_all_stat() :
     db = connectDB()
