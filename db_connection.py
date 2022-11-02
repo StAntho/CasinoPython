@@ -24,7 +24,7 @@ def insert_data(pseudo,sold,current_level,datetime):
     db = connectDB()
     mySql_insert_query = """INSERT INTO User (pseudo, sold, current_level,first_connection) VALUES (%s, %s,%s,%s) """
     cursor = db.cursor()
-    record = (pseudo, sold,cur_level ,datetime)
+    record = (pseudo, sold,current_level ,datetime)
     cursor.execute(mySql_insert_query, record)
     db.commit()
     print(cursor.rowcount, "Record inserted successfully into User table")
