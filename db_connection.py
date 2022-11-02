@@ -2,34 +2,65 @@ import os
 from dotenv import load_dotenv
 import mysql.connector as con
 from mysql.connector import Error
-
+from datetime import datetime
 load_dotenv()
 
-connection_params = {
+def connectDB():
+    connection_params = {
     'host': os.getenv('HOST_NAME'),
     'user': os.getenv('USER_NAME'),
     'password': os.getenv('PASSWORD'),
     'database': os.getenv('DATABASE_NAME'),
-}
-try:
-    connection = con.connect(**connection_params)
-    print(connection)
-    if connection and connection.is_connected():
-        mySql_Create_Table_Query = """CREATE TABLE User ( 
-                            Id int(11) NOT NULL,
-                            pseudo varchar(250) NOT NULL,
-                            first_connection Date NOT NULL,
-                            PRIMARY KEY (Id)) """
-        
-        cursor = connection.cursor()
-        cursor.execute(mySql_Create_Table_Query)
-        print("Laptop Table created successfully ")
-        # record = cursor.fetchone()
-        # print("You're connected to database: ", record)
-except Error as e:
-    print("Failed to create table in MySQL: {}".format(e))
-finally:
-    if connection and connection.is_connected():
-        cursor.close()
-        connection.close()
-        print("MySQL connection is closed")
+    }
+    try:
+        connection = con.connect(**connection_params)
+        if connection and connection.is_connected():
+            return connection
+    except Error as e:
+        print("Failed to connect: {}".format(e))
+
+def insertData(pseudo,sold,datetime):
+    db = connectDB()
+    mySql_insert_query = """INSERT INTO User (pseudo, sold, first_connection) VALUES (%s, %s,%s) """
+    cursor = db.cursor()
+    record = (pseudo, sold, datetime)
+    cursor.execute(mySql_insert_query, record)
+    db.commit()
+    print(cursor.rowcount, "Record inserted successfully into User table")
+    
+def select_user_by_psuedo(pseudo):
+    db = connectDB()
+    mySql_select_query = """SELECT * FROM User WHERE pseudo = %s"""
+    cursor = db.cursor()
+    cursor.execute(mySql_select_query, (pseudo,))
+    records = cursor.fetchall()
+    return records
+
+
+def select_user():
+    db = connectDB()
+    mySql_select_query = """SELECT * FROM User"""
+    cursor = db.cursor()
+    cursor.execute(mySql_select_query)
+    records = cursor.fetchall()
+    return records
+
+def delete_user(username):
+    db = connectDB()
+    mySql_delete_query = """DELETE FROM User WHERE pseudo = %s"""
+    cursor = db.cursor()
+    cursor.execute(mySql_delete_query, (username,))
+    db.commit()
+    print(cursor.rowcount, "Record deleted successfully from User table")
+
+# Path: main.py
+if __name__ == "__main__":
+    # recods = select_user()
+    # print(recods)
+    # record = select_user_by_psuedo("testData2")
+    # print(record)
+    date = datetime.now()
+    # datenow = date.strftime("%d/%m/%Y %H:%M:%S")
+    insertData('testData9',45,date)
+    recods = select_user()
+    print(recods)
