@@ -1,4 +1,6 @@
 from random import randrange
+import db_connection
+from datetime import datetime
 
 
 # Initialisation de la mise de l'utilisateur
@@ -30,7 +32,7 @@ def set_mise(level = 1) :
 
 
 # Inclusion du jeu
-def game(level, mise) :
+def game(name_user, level, mise) :
 	while True :
 		match level :
 			case 1 :
@@ -68,7 +70,8 @@ def game(level, mise) :
 					elif nb_coup == 3 :
 						gain = mise / 2
 					print("Bingo " + name_user + ", vous avez gagné en " + str(nb_coup) + " coup(s) et vous avec emporté " + str(gain) + " € !")
-					# TODO: Il faut enregistrer en base les stats (nb_coup, gain, mise)
+					# TODO: Il faut enregistrer en base les stats (user_id, level, mise, gain, nb_coup)
+					db_connection.insert_level(name_user, level , mise , gain, nb_coup)
 					return True
 
 				if nb_coup == nb_coup_max :
@@ -119,9 +122,13 @@ print("Je suis Python. Quel est votre pseudo ?")
 name_user = input('')
 
 while name_user :
-	if name_user :
+	is_user = db_connection.select_user_by_psuedo(name_user)
+	print(is_user)
+	if not is_user :
 		# Si nouvel utilisateur
 		level = 1
+		sold = 10
+		db_connection.insertData(name_user,sold,level,datetime.now())
 		print("\nHello " + name_user + ", vous avez 10 €, Très bien ! Installez vous SVP à la table de pari.")
 		print("Je vous expliquerai le principe du jeu :\n")
 		print(instruction_txt)
@@ -137,7 +144,7 @@ while name_user :
 				break
 			else :
 				print("Je ne comprends pas ! Voulez-vous que j'explique les règles du jeu (O/N) ?")
-
+		
 		print("\nVoulez-vous recommencer au level 1 (O/N) ?")
 		while True :
 			level_statement = input('')
@@ -145,7 +152,8 @@ while name_user :
 				level = 1
 				break
 			elif level_statement.lower() == 'n' :
-				level = 2
+				level = db_connection.select_user_level(name_user)
+				# level = 2
 				break
 			else :
 				print('Je ne comprends pas ! Voulez-vous recommencer au level 1 (O/N) ?')
@@ -157,7 +165,7 @@ while name_user :
 	# Début du jeu
 	print("\nLevel " + str(level))
 	while True :
-		game_ret = game(level, mise)
+		game_ret = game(name_user, level, mise)
 		if game_ret :
 			if level != 3 :
 				show_stat(level)
