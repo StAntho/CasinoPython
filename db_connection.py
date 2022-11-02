@@ -82,6 +82,21 @@ def update_user_sold_level(sold,current_level):
     db.commit()
     print(cursor.rowcount, "Record updated successfully into User table")
 
+def update_user_level(current_level):
+    db = connectDB()
+    mySql_update_query = """UPDATE User SET current_level = %s WHERE pseudo = %s"""
+    cursor = db.cursor()
+    cursor.execute(mySql_update_query, (current_level))
+    db.commit()
+    print(cursor.rowcount, "Record updated successfully into User table")
+
+def update_user_sold(sold):
+    db = connectDB()
+    mySql_update_query = """UPDATE User SET sold = %s WHERE pseudo = %s"""
+    cursor = db.cursor()
+    cursor.execute(mySql_update_query, (sold))
+    db.commit()
+    print(cursor.rowcount, "Record updated successfully into User table")
 
 if __name__ == "__main__":
     # recods = select_user()
