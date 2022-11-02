@@ -99,11 +99,38 @@ def update_user_sold(sold,user_id):
     print(cursor.rowcount, "Record updated successfully into User table")
 
 
-def get_all_level_by_user_id(user_id):
+def get_all_stat_by_user_id(user_id):
     db = connectDB()
-    mySql_select_query = """SELECT * FROM Level WHERE user_id = %s"""
+    mySql_select_query = """SELECT MAX(level) level_max
+                                , MIN(gain) gain_min
+                                , AVG(gain) gain_moy
+                                , MAX(gain) gain_max
+                                , MIN(mise) mise_min
+                                , AVG(mise) mise_moy
+                                , MAX(mise) mise_max
+                                , AVG(nb_coup) nb_coup_moy
+                            FROM Level
+                            WHERE user_id = %s"""
     cursor = db.cursor()
     cursor.execute(mySql_select_query, (user_id,))
+    records = cursor.fetchall()
+    return records
+
+def get_all_stat() :
+    db = connectDB()
+    mySql_select_query = """SELECT user_id
+                                , MAX(level) level_max
+                                , MIN(gain) gain_min
+                                , AVG(gain) gain_moy
+                                , MAX(gain) gain_max
+                                , MIN(mise) mise_min
+                                , AVG(mise) mise_moy
+                                , MAX(mise) mise_max
+                                , AVG(nb_coup) nb_coup_moy
+                            FROM Level
+                            GROUP BY user_id"""
+    cursor = db.cursor()
+    cursor.execute(mySql_select_query)
     records = cursor.fetchall()
     return records
 
@@ -116,5 +143,5 @@ if __name__ == "__main__":
     # # datenow = date.strftime("%d/%m/%Y %H:%M:%S")
     # insertData('testData9',45,date)
     # recods = select_user()
-    record = get_all_level_by_user_id(10)
+    record = get_all_stat_by_user_id(10)
     print(record)
