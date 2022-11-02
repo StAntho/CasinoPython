@@ -20,9 +20,9 @@ def connectDB():
         print("Failed to connect: {}".format(e))
 
 
-def insert_data(pseudo,sold,cur_level,datetime):
+def insert_data(pseudo,sold,current_level,datetime):
     db = connectDB()
-    mySql_insert_query = """INSERT INTO User (pseudo, sold, first_connection) VALUES (%s, %s,%s,%s) """
+    mySql_insert_query = """INSERT INTO User (pseudo, sold, current_level,first_connection) VALUES (%s, %s,%s,%s) """
     cursor = db.cursor()
     record = (pseudo, sold,cur_level ,datetime)
     cursor.execute(mySql_insert_query, record)
