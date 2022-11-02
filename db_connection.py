@@ -56,7 +56,7 @@ def delete_user(username):
 
 def insert_level(user_id,level,mise,gain,nb_coup):
     db = connectDB()
-    mySql_insert_query = """INSERT INTO Level (level) VALUES (%s,%s,%s,%s,%s) """
+    mySql_insert_query = """INSERT INTO Level (user_id,level,mise,gain,nb_coup) VALUES (%s,%s,%s,%s,%s) """
     cursor = db.cursor()
     record = (user_id,level,mise,gain,nb_coup)
     cursor.execute(mySql_insert_query, record)
