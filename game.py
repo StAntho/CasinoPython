@@ -1,16 +1,17 @@
 from random import randrange
+import db_connection
 
 # Initialisation de la mise de l'utilisateur
-def set_mise(level = 1) :
-	sold = 10 # TODO: Il faut récupérer le solde de l'utilisateur
-	if level != 1 or sold != 10 :
+def set_mise(level, user_sold) :
+	# sold = 10 # TODO: Il faut récupérer le solde de l'utilisateur
+	if level != 1 or user_sold != 10 :
 		print("\nEntrez votre mise :")
 		while True :
 			try :
 				mise = int(input(''))
-				if mise > sold :
+				if mise > user_sold :
 					print("Erreur, votre mise est plus elevé que votre solde.")
-					print("Entrer une mise inférieure ou égale à " + sold + " € :")
+					print("Entrer une mise inférieure ou égale à " + user_sold + " € :")
 					continue
 				return mise
 			except ValueError :
@@ -28,7 +29,7 @@ def set_mise(level = 1) :
 				print("Le montat saisi n'est pas valide. Entrer SVP un montant entre 1 et 10 € :")
 
 # Début du jeu
-def game(name_user, level, mise) :
+def game(user_id, user_sold, name_user, level, mise) :
 	while True :
 		match level :
 			case 1 :
@@ -36,12 +37,12 @@ def game(name_user, level, mise) :
 				nb_coup_max = 3
 			case 2 :
 				print("\nRappelez vous, le principe est le même sauf que mon nombre est maintenant entre 1 et 20 et vous avez le droit à 5 essais !")
-				mise = set_mise(level)
+				mise = set_mise(level, user_sold)
 				nb_ordi = randrange(0, 21, 1)
 				nb_coup_max = 5
 			case 3 :
 				print("\nRappelez vous, le principe est le même sauf que mon nombre est maintenant entre 1 et 30 et vous avez le droit à 7 essais !")
-				mise = set_mise(level)
+				mise = set_mise(level, user_sold)
 				nb_ordi = randrange(0, 31, 1)
 				nb_coup_max = 7
 
@@ -67,11 +68,17 @@ def game(name_user, level, mise) :
 						gain = mise / 2
 					print("Bingo " + name_user + ", vous avez gagné en " + str(nb_coup) + " coup(s) et vous avec emporté " + str(gain) + " € !")
 					# TODO: Il faut enregistrer en base les stats (nb_coup, gain, mise)
+					db_connection.insert_level(user_id, level , mise , gain, nb_coup)
+					sold = user_sold - mise + gain
+					db_connection.update_user_sold(sold)
 					return True
 
 				if nb_coup == nb_coup_max :
 					print("Vous avez perdu ! Mon nombre est " + str(nb_ordi) + " !")
 					# TODO: Il faut enregistrer en base les stats (nb_coup, gain, mise)
+					db_connection.insert_level(user_id, level , mise , gain, nb_coup)
+					sold = user_sold - mise
+					db_connection.update_user_sold(sold)
 					return False
 				else :
 					print("Il vous reste " + str(nb_coup_max - nb_coup) + " chance(s) !")

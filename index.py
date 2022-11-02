@@ -48,11 +48,19 @@ while name_user :
 		level = 1
 		sold = 10
 		db_connection.insert_data(name_user,sold,level,datetime.now())
+		is_user = db_connection.select_user_by_psuedo(name_user)
+		for data in is_user:
+			user_id = data[0] 
+			user_sold = data[2]
+			print(id)
 		print("\nHello " + name_user + ", vous avez 10 €, Très bien ! Installez vous SVP à la table de pari.")
 		print("Je vous expliquerai le principe du jeu :\n")
 		print(instruction_txt)
 	else :
 		# Si l'utilisateur est connnu alors demander s'il veut relire les règles
+		for id in is_user:
+			user_id = id[0] 
+			print(id)
 		print("\nVoulez-vous que j'explique les règles du jeu (O/N) ?")
 		while True:
 			instruction = input('')
@@ -78,22 +86,22 @@ while name_user :
 
 	# Insertion de la mise
 	print("\nLe jeu commence, entrez votre mise :")
-	mise = set_mise(level)
+	mise = set_mise(level, user_sold)
 
 	# Début du jeu
 	print("\nLevel " + str(level))
 	while True :
-		game_ret = game(name_user, level, mise)
+		game_ret = game(user_id, user_sold, name_user, level, mise)
 		if game_ret :
 			if level != 3 :
 				show_stat(level)
 				level += 1
 			else :
 				show_stat(level)
-				break
 		else :
 			if level != 1 :
 				level -= 1
+		db_connection.update_user_level(level)		
 
 		if leave() :
 			if game_ret :
