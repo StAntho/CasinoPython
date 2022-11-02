@@ -49,7 +49,6 @@ def game(user_id, user_sold, name_user, level) :
 
 		nb_user = -1
 		nb_coup = 0
-		print("Mon choix : {}".format(nb_ordi))
 		while nb_ordi != nb_user :
 			# TODO: Timer de 10 secondes
 			print("Alors mon nombre est ?")
@@ -61,12 +60,21 @@ def game(user_id, user_sold, name_user, level) :
 				elif nb_user < nb_ordi :
 					print("Votre nbre est trop petit !")
 				elif nb_user == nb_ordi :
-					if nb_coup == 1 :
-						gain = mise * 2
-					elif nb_coup == 2 :
-						gain = mise
-					elif nb_coup == 3 :
-						gain = mise / 2
+					match nb_coup :
+						case 1 :
+							gain = mise * 2
+						case 2 :
+							gain = mise
+						case 3 :
+							gain = mise / 2
+						case 4 :
+							gain = mise / 3
+						case 5 :
+							gain = mise / 4
+						case 6 :
+							gain = mise / 5
+						case 7 :
+							gain = mise / 6
 					print("Bingo " + name_user + ", vous avez gagné en {} coup(s) et vous avez emporté {} € !".format(nb_coup, gain))
 					db_connection.insert_level(user_id, level , mise , gain, nb_coup)
 					sold = user_sold - mise + gain
