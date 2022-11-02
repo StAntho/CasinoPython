@@ -70,15 +70,16 @@ def game(user_id, user_sold, name_user, level, mise) :
 					# TODO: Il faut enregistrer en base les stats (nb_coup, gain, mise)
 					db_connection.insert_level(user_id, level , mise , gain, nb_coup)
 					sold = user_sold - mise + gain
-					db_connection.update_user_sold(sold)
+					print(sold)
+					db_connection.update_user_sold(sold, user_id)
 					return True
 
 				if nb_coup == nb_coup_max :
 					print("Vous avez perdu ! Mon nombre est " + str(nb_ordi) + " !")
 					# TODO: Il faut enregistrer en base les stats (nb_coup, gain, mise)
-					db_connection.insert_level(user_id, level , mise , gain, nb_coup)
+					db_connection.insert_level(user_id, level , mise , 0, nb_coup)
 					sold = user_sold - mise
-					db_connection.update_user_sold(sold)
+					db_connection.update_user_sold(sold, user_id)
 					return False
 				else :
 					print("Il vous reste " + str(nb_coup_max - nb_coup) + " chance(s) !")

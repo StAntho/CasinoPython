@@ -52,15 +52,16 @@ while name_user :
 		for data in is_user:
 			user_id = data[0] 
 			user_sold = data[2]
-			print(id)
+			print(user_sold)
 		print("\nHello " + name_user + ", vous avez 10 €, Très bien ! Installez vous SVP à la table de pari.")
 		print("Je vous expliquerai le principe du jeu :\n")
 		print(instruction_txt)
 	else :
 		# Si l'utilisateur est connnu alors demander s'il veut relire les règles
-		for id in is_user:
-			user_id = id[0] 
-			print(id)
+		for data in is_user:
+			user_id = data[0] 
+			user_sold = data[2]
+			print(user_sold)
 		print("\nVoulez-vous que j'explique les règles du jeu (O/N) ?")
 		while True:
 			instruction = input('')
@@ -101,7 +102,8 @@ while name_user :
 		else :
 			if level != 1 :
 				level -= 1
-		db_connection.update_user_level(level)		
+		db_connection.update_user_level(level, user_id)	
+		print(level)	
 
 		if leave() :
 			if game_ret :
