@@ -33,20 +33,21 @@ def game(user_id, user_sold, name_user, level) :
 		match level :
 			case 1 :
 				print("\nLe jeu commence, entrez votre mise :")
-				mise = set_mise(level, user_sold)
 				nb_ordi = randrange(1, 11, 1)
+				max = 10
 				nb_coup_max = 3
 			case 2 :
 				print("\nRappelez vous, le principe est le même sauf que mon nombre est maintenant entre 1 et 20 et vous avez le droit à 5 essais !")
-				mise = set_mise(level, user_sold)
 				nb_ordi = randrange(1, 21, 1)
+				max = 20
 				nb_coup_max = 5
 			case 3 :
 				print("\nRappelez vous, le principe est le même sauf que mon nombre est maintenant entre 1 et 30 et vous avez le droit à 7 essais !")
-				mise = set_mise(level, user_sold)
 				nb_ordi = randrange(1, 31, 1)
+				max = 30
 				nb_coup_max = 7
 
+		mise = set_mise(level, user_sold)
 		nb_user = -1
 		nb_coup = 0
 		while nb_ordi != nb_user :
@@ -92,5 +93,5 @@ def game(user_id, user_sold, name_user, level) :
 					print("Il vous reste {} chance(s) !".format(nb_coup_max - nb_coup))
 					continue
 			except ValueError :
-				print("Je ne comprends pas ! Entrer SVP un nombre entre 1 et 10 :")
+				print("Je ne comprends pas ! Entrer SVP un nombre entre 1 et {} :".format(max))
 				continue
