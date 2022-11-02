@@ -16,5 +16,5 @@ def user_informations(pseudo):
 
 
 if __name__ == '__main__':
-    user_informations('testData4')
+    user_informations('azerty')
    

@@ -98,6 +98,15 @@ def update_user_sold(sold,user_id):
     db.commit()
     print(cursor.rowcount, "Record updated successfully into User table")
 
+
+def get_all_level_by_user_id(user_id):
+    db = connectDB()
+    mySql_select_query = """SELECT * FROM Level WHERE user_id = %s"""
+    cursor = db.cursor()
+    cursor.execute(mySql_select_query, (user_id,))
+    records = cursor.fetchall()
+    return records
+
 if __name__ == "__main__":
     # recods = select_user()
     # print(recods)
@@ -107,5 +116,5 @@ if __name__ == "__main__":
     # # datenow = date.strftime("%d/%m/%Y %H:%M:%S")
     # insertData('testData9',45,date)
     # recods = select_user()
-    record = select_user_level('azerty')
+    record = get_all_level_by_user_id(10)
     print(record)
