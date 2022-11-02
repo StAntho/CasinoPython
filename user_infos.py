@@ -25,3 +25,10 @@ def user_informations(pseudo, user_id) :
         print("---- La mise moyenne est de : {:.2f}€".format(row[5]))
         print("---- Le nombre moyen de tentatives pour trouver le bon nombre est : {:.2f}".format(row[7]))
         print("--------------------------------------------")
+
+def best_player() :
+    best_player = db_connection.get_all_stat()
+    print("--------------------- Top 3 joueurs par sold-----------------------")
+    print("------------------------------------------------------------------")
+    for row in best_player :
+        print("-------- {} avec un gain de {}€".format(row[0], row[1]))

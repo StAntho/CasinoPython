@@ -110,17 +110,7 @@ def get_find_in_one_by_user_id(user_id) :
 # Retourne les statistiques de tous les utilisateurs
 def get_all_stat() :
     db = connectDB()
-    mySql_select_query = """SELECT user_id
-                                , MAX(level) level_max
-                                , MIN(gain) gain_min
-                                , AVG(gain) gain_moy
-                                , MAX(gain) gain_max
-                                , MIN(mise) mise_min
-                                , AVG(mise) mise_moy
-                                , MAX(mise) mise_max
-                                , AVG(nb_coup) nb_coup_moy
-                            FROM Level
-                            GROUP BY user_id"""
+    mySql_select_query = """SELECT pseudo, sold FROM User ORDER BY sold DESC, pseudo LIMIT 3"""
     cursor = db.cursor()
     cursor.execute(mySql_select_query)
     records = cursor.fetchall()
