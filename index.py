@@ -78,10 +78,7 @@ while name_user :
 		game_ret = game(user_id, user_sold, name_user, level)
 		if game_ret :
 			if level != 3 :
-				user_infos.user_informations(name_user, user_id)
 				level += 1
-			else :
-				user_infos.user_informations(name_user, user_id)
 		else :
 			if level != 1 :
 				level -= 1
@@ -100,6 +97,7 @@ while name_user :
 			else :
 				print("\nVous passez au Level {}.".format(level))
 			continue
+		user_infos.user_informations(name_user, user_id)
 		user_infos.best_player()
 		print("\nAu revoir ! Vous finissez la partie avec {} €.".format(user_sold))
 		exit()

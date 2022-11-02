@@ -27,7 +27,6 @@ def insert_data(pseudo, sold, current_level, datetime) :
     record = (pseudo, sold,current_level ,datetime)
     cursor.execute(mySql_insert_query, record)
     db.commit()
-    print(cursor.rowcount, "Record inserted successfully into User table")
 
 # Récupère les informations de l'utilisateur pseudo
 def select_user_by_psuedo(pseudo) :
@@ -46,7 +45,6 @@ def insert_level(user_id, level, mise, gain, nb_coup) :
     record = (user_id, level, mise, gain, nb_coup)
     cursor.execute(mySql_insert_query, record)
     db.commit()
-    print(cursor.rowcount, "Record inserted successfully into Level table")
 
 # Récupère le dernier level atteint par l'utilisateur user_name
 def select_user_level(user_name) :
@@ -65,7 +63,6 @@ def update_user_level(current_level, user_id) :
     cursor = db.cursor()
     cursor.execute(mySql_update_query, (current_level, user_id))
     db.commit()
-    print(cursor.rowcount, "Record updated successfully into User table")
 
 # Update du sold de l'utilisateur user_id
 def update_user_sold(sold, user_id) :
@@ -74,7 +71,6 @@ def update_user_sold(sold, user_id) :
     cursor = db.cursor()
     cursor.execute(mySql_update_query, (sold, user_id))
     db.commit()
-    print(cursor.rowcount, "Record updated successfully into User table")
 
 # Retourne les statistiques de l'utilisateur user_id
 def get_all_stat_by_user_id(user_id) :
