@@ -28,6 +28,22 @@ def insert_data(pseudo, sold, current_level, datetime) :
     cursor.execute(mySql_insert_query, record)
     db.commit()
 
+# Suppresion de l'utilisateur user_id
+def delete_user(user_id):
+    db = connectDB()
+    # Suppresion de la table Level
+    mySql_delete_query = """DELETE FROM Level WHERE user_id = %s"""
+    cursor = db.cursor()
+    cursor.execute(mySql_delete_query, (user_id,))
+    db.commit()
+    print(cursor.rowcount, "Record deleted successfully from Level table")
+    # Suppresion de la table User
+    mySql_delete_query = """DELETE FROM User WHERE id = %s"""
+    cursor = db.cursor()
+    cursor.execute(mySql_delete_query, (user_id,))
+    db.commit()
+    print(cursor.rowcount, "Record deleted successfully from User table")
+
 # Récupère les informations de l'utilisateur pseudo
 def select_user_by_psuedo(pseudo) :
     db = connectDB()

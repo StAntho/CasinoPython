@@ -90,6 +90,11 @@ while name_user :
 		for data in user_data :
 			user_sold = data[2]
 
+		if user_sold == 0 :
+			db_connection.delete_user(user_id)
+			print("Vous n'avez plus d'argent à miser. Au revoir !")
+			exit()
+
 		# Si l'utilisateur veut s'arrêter ici
 		if leave() :
 			if game_ret :
