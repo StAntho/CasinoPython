@@ -70,7 +70,9 @@ def select_user_level(user_name):
     cursor = db.cursor()
     cursor.execute(mySql_select_query, (user_name,))
     records = cursor.fetchall()
-    return records
+    for row in records:
+        return row[0]
+    # return records
 
 def update_user_sold_level(sold,current_level):
     db = connectDB()
@@ -90,5 +92,5 @@ if __name__ == "__main__":
     # # datenow = date.strftime("%d/%m/%Y %H:%M:%S")
     # insertData('testData9',45,date)
     # recods = select_user()
-    record = select_user_level("testData2")
+    record = select_user_level('azerty')
     print(record)
